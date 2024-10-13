@@ -1,0 +1,54 @@
+public partial class Form1 : Form
+{
+    private Contatos listaContatos = new Contatos();
+
+    public Form1()
+    {
+        InitializeComponent();
+    }
+
+    private void btnAdicionar_Click(object sender, EventArgs e)
+    {
+        // Criar um novo contato e adicionar à lista
+        Data dtNasc = new Data(int.Parse(txtDia.Text), int.Parse(txtMes.Text), int.Parse(txtAno.Text));
+        Contato novoContato = new Contato(txtNome.Text, txtEmail.Text, dtNasc);
+
+        Telefone tel = new Telefone(cmbTipo.Text, txtNumero.Text, chkPrincipal.Checked);
+        novoContato.AdicionarTelefone(tel);
+
+        if (listaContatos.Adicionar(novoContato))
+        {
+            MessageBox.Show("Contato adicionado com sucesso!");
+        }
+        else
+        {
+            MessageBox.Show("Contato já existe.");
+        }
+    }
+
+    private void btnListar_Click(object sender, EventArgs e)
+    {
+        lstContatos.Items.Clear();
+        foreach (Contato contato in listaContatos.ListarContatos())
+        {
+            lstContatos.Items.Add(contato.ToString());
+        }
+    }
+
+    private void btnPesquisar_Click(object sender, EventArgs e)
+    {
+        Contato contato = new Contato(txtNome.Text, txtEmail.Text, null);
+        Contato encontrado = listaContatos.Pesquisar(contato);
+
+        if (encontrado != null)
+        {
+            MessageBox.Show(encontrado.ToString());
+        }
+        else
+        {
+            MessageBox.Show("Contato não encontrado.");
+        }
+    }
+
+    // Adicionar implementações para os outros botões (Alterar, Remover, etc.)
+}
